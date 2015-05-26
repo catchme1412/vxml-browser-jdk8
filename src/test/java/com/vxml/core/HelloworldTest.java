@@ -108,8 +108,8 @@ public class HelloworldTest {
 //        String o = driver.nextOuput();
 //        System.err.println(o);
         driver.nextInput("true");// a
-        driver.nextInput("true");// b
-        driver.nextInput("true");// c
+        driver.nextInput("false");// b
+        driver.nextInput("false");// c
         driver.nextInput("false");// d
 //        o = driver.nextOuput();
         String o;

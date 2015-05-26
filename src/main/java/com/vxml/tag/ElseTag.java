@@ -8,7 +8,11 @@ public class ElseTag extends LogicalTag {
     	if (!isLogicalBlockExecuted && !isSkipExecutePeek()) {
     	    toggleSkipExecute(false);
     	} else {
-    	    toggleSkipExecute(true);
+    	    if (!isLogicalBlockExecuted) {
+    	        toggleSkipExecute(false);
+    	    } else {
+    	        toggleSkipExecute(true);
+    	    }
     	}
     }
 }
