@@ -11,25 +11,13 @@ public class ElseifTag extends LogicalTag {
         Boolean isLogicalBlockExecuted = isLogicalBlockExecuted();
         Boolean isNoSkip = !isSkipExecutePeek();
         Boolean isElseIfCondtionTrue = (Boolean) VxmlBrowser.getVxmlExecutionContext().executeScript(cond);
-        if (isNoSkip && !isLogicalBlockExecuted && isElseIfCondtionTrue) {
+        if (isLogicalBlockExecuted) {
+            return;
+        }
+        if (isElseIfCondtionTrue && !isLogicalBlockExecuted) {
+            toggleLogicalBlockStatus(true);
             toggleSkipExecute(false);
         }
-        if (isNoSkip && isLogicalBlockExecuted) {
-            toggleSkipExecute(true);
-        }
-        if (isNoSkip && !isLogicalBlockExecuted && !isElseIfCondtionTrue) {
-            toggleSkipExecute(true);
-        }
-//        if (!isSkip) {
-//            
-//        }
-//        if (!isLogicalBlockExecuted) {
-//            if (!isLogicalBlockExecuted && isElseIfCondtionTrue) {
-//                toggleLogicalBlockStatus(true);
-//                toggleSkipExecute(false);
-//            } else if (isLogicalBlockExecuted) {
-//                toggleSkipExecute(true);
-//            }
-//        }
+
     }
 }

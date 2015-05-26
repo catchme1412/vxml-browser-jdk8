@@ -8,24 +8,24 @@ public class PromptTag extends AbstractTag {
 
     @Override
     public void startTag() {
-        if (!isSkipExecutePeek() && isProceed()) {
-            isSkipExecute(false);
-        } else {
-            isSkipExecute(true);
-        }
+//        if (!isSkipExecutePeek() && isProceed()) {
+//            isSkipExecute(false);
+//        } else {
+//            isSkipExecute(true);
+//        }
     }
 
     @Override
     public void endTag() {
-        clearTopSkipExecuteFlag();
+//        clearTopSkipExecuteFlag();
     }
     
-    public boolean isProceed() {
-        Boolean isProceed = true;
-        if (cond != null) {
-            isProceed = (Boolean) VxmlBrowser.getVxmlExecutionContext().executeScript(cond);
-        }
-        return isProceed;
-    }
+//    public boolean isProceed() {
+////        Boolean isProceed = true;
+////        if (cond != null) {
+////            isProceed = (Boolean) VxmlBrowser.getVxmlExecutionContext().executeScript(cond);
+////        }
+////        return isProceed;
+//    }
 
 }

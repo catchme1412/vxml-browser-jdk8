@@ -4,14 +4,11 @@ public class ElseTag extends LogicalTag {
 
     @Override
     public void startTag() {
-        Boolean ifConditionState = isLogicalBlockExecuted();
-    	if (!isSkipExecutePeek() && !ifConditionState) {
-    		if (ifConditionState) {
-    			toggleSkipExecute(true);
-    		} else {
-    			toggleSkipExecute(false);
-    		}
-    		toggleLogicalBlockStatus(!ifConditionState);
+        Boolean isLogicalBlockExecuted = isLogicalBlockExecuted();
+    	if (!isLogicalBlockExecuted && !isSkipExecutePeek()) {
+    	    toggleSkipExecute(false);
+    	} else {
+    	    toggleSkipExecute(true);
     	}
     }
 }
