@@ -24,9 +24,19 @@ public class LogicalTag extends AbstractTag {
         toggleSkipExecute(!isTrue);
     }
 
-    public void removelogicalBlockStatus() {
+    public void clearLogicalBlockStatus() {
         logicalBlockExecuted.pop();
         clearTopSkipExecuteFlag();
     }
+    
+    
+//    public boolean isSkipExecute() {
+//        if (!isSkipExecuteStack.isEmpty()) {
+//            return isSkipExecuteStack.pop();
+//        } else {
+//            return false;
+//        }
+//    }
+
 
 }

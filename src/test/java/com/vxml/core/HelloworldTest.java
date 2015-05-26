@@ -67,17 +67,52 @@ public class HelloworldTest {
     }
 
     
+//    public static void main(String[] args) throws URISyntaxException {
+//    	VxmlBrowserDriver driver = new VxmlBrowserDriver();
+//        VxmlBrowser vxmlBrowser = new VxmlBrowser();
+//        driver.setBrowser(vxmlBrowser);
+//    	driver.setEntryPointUrl("http://localhost:8082/com.vxml.browser/test/ifElseIfElseWithNoGrammar.vxml");
+//        driver.start();
+//        System.out.println("No wait...");
+//        String o = driver.nextOuput();
+//        System.out.println(o);
+//        driver.nextInput("3");
+//        o = driver.nextOuput();
+//        System.out.println(o);
+//        driver.waitForCompletion();
+//	}
+    
+//    public static void main(String[] args) throws URISyntaxException {
+//    	VxmlBrowserDriver driver = new VxmlBrowserDriver();
+//        VxmlBrowser vxmlBrowser = new VxmlBrowser();
+//        driver.setBrowser(vxmlBrowser);
+//    	driver.setEntryPointUrl("http://localhost:8082/com.vxml.browser/test/nestedIf.vxml");
+//        driver.start();
+//        System.out.println("No wait...");
+//        String o = driver.nextOuput();
+//        System.out.println(o);
+//        driver.nextInput("true");
+//        o = driver.nextOuput();
+//        driver.nextInput("true");
+//        driver.nextInput("false");
+//        System.out.println(o);
+//        driver.waitForCompletion();
+//	}
+    
+    
     public static void main(String[] args) throws URISyntaxException {
     	VxmlBrowserDriver driver = new VxmlBrowserDriver();
         VxmlBrowser vxmlBrowser = new VxmlBrowser();
         driver.setBrowser(vxmlBrowser);
-    	driver.setEntryPointUrl("http://localhost:8082/com.vxml.browser/test/ifElseIfElseWithNoGrammar.vxml");
+    	driver.setEntryPointUrl("http://localhost:8082/com.vxml.browser/test/nestedIf.vxml");
         driver.start();
         System.out.println("No wait...");
         String o = driver.nextOuput();
         System.out.println(o);
-        driver.nextInput("3");
+        driver.nextInput("false");
         o = driver.nextOuput();
+        driver.nextInput("false");
+        driver.nextInput("true");
         System.out.println(o);
         driver.waitForCompletion();
 	}

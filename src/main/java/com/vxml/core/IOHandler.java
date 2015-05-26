@@ -33,7 +33,7 @@ public class IOHandler {
             while(outputQueue.isEmpty()) {
                 try {
                     Thread.sleep(1000);
-                    System.out.println("waiting for output");
+//                    System.out.println("waiting for output");
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -58,8 +58,8 @@ public class IOHandler {
         while (dtmfInputQueue.isEmpty() && i++ < 50) {
             try {
                 //give some time for the input thread to provide data.
-                Thread.sleep(100);
-                System.out.println("waiting for input");
+                Thread.sleep(1000);
+//                System.out.println("waiting for input");
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

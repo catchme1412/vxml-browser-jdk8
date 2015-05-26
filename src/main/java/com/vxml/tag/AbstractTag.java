@@ -5,6 +5,7 @@ import java.util.Stack;
 import org.w3c.dom.Node;
 
 import com.vxml.core.IOHandler;
+import com.vxml.utils.XmlUtils;
 
 public abstract class AbstractTag implements Tag {
 
@@ -22,7 +23,7 @@ public abstract class AbstractTag implements Tag {
     @Override
     public void execute() {
         if (this instanceof LogicalTag) {
-            LogicalTag logical = (LogicalTag)this;
+            LogicalTag logical = (LogicalTag) this;
             if (logical.isLogicalBlockExecuted()) {
                 return;
             }
@@ -37,10 +38,25 @@ public abstract class AbstractTag implements Tag {
 
     public void tryExecute() {
         if (((AbstractTag) this).isSkipExecutePeek()) {
-            System.out.println("SKIPPING:"+ ((AbstractTag) this));
+            System.out.println("SKIPPING:" + this);
         } else {
             execute();
         }
+    }
+    
+    
+    @Override
+    public String toString() {
+        String xml = nodeToString();
+        String tag = xml.substring(0, xml.indexOf(">") + 1);
+        if (tag.isEmpty()) {
+            return "\t#text:" + getNode().getTextContent().trim();
+        }
+        return tag;
+    }
+    
+    public String nodeToString() {
+        return XmlUtils.nodeToString(getNode());
     }
 
     public Node getNode() {
@@ -60,13 +76,13 @@ public abstract class AbstractTag implements Tag {
         isSkipExecuteStack.push(isSkip);
     }
 
-    public boolean isSkipExecute() {
-        if (!isSkipExecuteStack.isEmpty()) {
-            return isSkipExecuteStack.pop();
-        } else {
-            return false;
-        }
-    }
+    // public boolean isSkipExecute() {
+    // if (!isSkipExecuteStack.isEmpty()) {
+    // return isSkipExecuteStack.pop();
+    // } else {
+    // return false;
+    // }
+    // }
 
     public void clearTopSkipExecuteFlag() {
         if (!isSkipExecuteStack.isEmpty()) {

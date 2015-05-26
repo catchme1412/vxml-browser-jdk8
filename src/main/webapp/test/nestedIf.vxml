@@ -17,9 +17,9 @@
 		<if cond="outerIfCondition == true">
 			<if cond="innerIfCondition == true">
 				<prompt>Both if true</prompt>
-				<elseif cond="innerElseIfCondition == true" />
+			<elseif cond="innerElseIfCondition == true" />
 				<prompt>Nested else if is true</prompt>
-				<else />
+			<else />
 				<prompt>Nested else is true</prompt>
 			</if>
 		<elseif cond="outerIfCondition == false" />

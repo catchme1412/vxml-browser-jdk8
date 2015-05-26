@@ -53,7 +53,12 @@ public class VxmlExecutionContext {
 
     public void assignVar(String var, String val) {
         vxmlScriptEngine.assignScriptVar(var, val);
-        
+    }
+    
+    public static void main(String[] args) {
+        VxmlExecutionContext t = new VxmlExecutionContext();
+        t.executeScriptFile("http://localhost:8585/ivr/common/js/parseXmlWithAttrToObject.js");
+        t.executeScript("parseXmlWithAttrToObject('<?xml version=\"1.0\" encoding=\"UTF-8\"?> <?access-control allow=\"*\"?> <response>   <loyaltyTier>SILVER</loyaltyTier> </response> ')");
     }
 
 }

@@ -8,12 +8,18 @@ public class IfTag extends LogicalTag {
 
     @Override
     public void startTag() {
+        Boolean isSkip = true;
         Boolean isIfConditionTrue = (Boolean) VxmlBrowser.getVxmlExecutionContext().executeScript(cond);
+        if (!isSkipExecutePeek()) {
+            isSkip = !isIfConditionTrue;
+        }
         setLogicalBlockExecuted(isIfConditionTrue);
+        isSkipExecute(isSkip);
     }
 
     @Override
     public void endTag() {
-        removelogicalBlockStatus();
+        clearLogicalBlockStatus();
+        clearTopSkipExecuteFlag();
     }
 }
