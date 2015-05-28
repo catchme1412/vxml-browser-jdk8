@@ -258,4 +258,63 @@ public class HelloworldTest {
 
     }
     
+    
+    
+    @Test
+    public void testDeeplyNestedInnerMostIf() throws URISyntaxException {
+        VxmlBrowserDriver driver = new VxmlBrowserDriver();
+        VxmlBrowser vxmlBrowser = new VxmlBrowser();
+        driver.setBrowser(vxmlBrowser);
+        driver.setEntryPointUrl("http://localhost:8082/com.vxml.browser/test/deeplyNestedIf.vxml");
+        driver.start();
+        System.out.println("No wait...");
+        // String o = driver.nextOuput();
+        // System.err.println(o);
+        driver.nextInput("true");// a
+        driver.nextInput("true");// b
+        driver.nextInput("true");// innerMostIf
+        driver.nextInput("false");// c
+        driver.nextInput("false");// d
+        // o = driver.nextOuput();
+        String o;
+        o = driver.nextOuput();
+        o = driver.nextOuput();
+        o = driver.nextOuput();
+        o = driver.nextOuput();
+        o = driver.nextOuput();
+        System.err.println("OUTPUT:" + o);
+        o = driver.nextOuput();
+        Assert.assertEquals("Both if true", o);
+        o = driver.nextOuput();
+        Assert.assertEquals("Inner Most if is also true", o);
+    }
+    
+    @Test
+    public void testDeeplyNestedInnerMostElse() throws URISyntaxException {
+        VxmlBrowserDriver driver = new VxmlBrowserDriver();
+        VxmlBrowser vxmlBrowser = new VxmlBrowser();
+        driver.setBrowser(vxmlBrowser);
+        driver.setEntryPointUrl("http://localhost:8082/com.vxml.browser/test/deeplyNestedIf.vxml");
+        driver.start();
+        System.out.println("No wait...");
+        // String o = driver.nextOuput();
+        // System.err.println(o);
+        driver.nextInput("true");// a
+        driver.nextInput("true");// b
+        driver.nextInput("false");// innerMostIf
+        driver.nextInput("false");// c
+        driver.nextInput("false");// d
+        // o = driver.nextOuput();
+        String o;
+        o = driver.nextOuput();
+        o = driver.nextOuput();
+        o = driver.nextOuput();
+        o = driver.nextOuput();
+        o = driver.nextOuput();
+        System.err.println("OUTPUT:" + o);
+        o = driver.nextOuput();
+        Assert.assertEquals("Both if true", o);
+        o = driver.nextOuput();
+        Assert.assertEquals("Inner Most else is true", o);
+    }
 }
