@@ -10,10 +10,11 @@ import com.vxml.utils.XmlUtils;
 public abstract class AbstractTag implements Tag {
 
     private Node node;
-    private static Stack<Boolean> isSkipExecuteStack;
+    private static Stack<Boolean> isExecuteTagStack;
 
     static {
-        isSkipExecuteStack = new Stack<Boolean>();
+        isExecuteTagStack = new Stack<Boolean>();
+        isExecuteTagStack.push(true);
     }
 
     @Override
@@ -22,12 +23,6 @@ public abstract class AbstractTag implements Tag {
 
     @Override
     public void execute() {
-        if (this instanceof LogicalTag) {
-            LogicalTag logical = (LogicalTag) this;
-            if (logical.isLogicalBlockExecuted()) {
-                return;
-            }
-        }
         System.out.println("AbstractTag.execute..." + node);
     }
 
@@ -37,14 +32,13 @@ public abstract class AbstractTag implements Tag {
     }
 
     public void tryExecute() {
-        if (((AbstractTag) this).isSkipExecutePeek()) {
-            System.out.println("SKIPPING:" + this);
-        } else {
+        if (((AbstractTag) this).isExecutePeek()) {
             execute();
+        } else {
+            System.out.println("SKIPPING:" + this);
         }
     }
-    
-    
+
     @Override
     public String toString() {
         String xml = nodeToString();
@@ -54,7 +48,7 @@ public abstract class AbstractTag implements Tag {
         }
         return tag;
     }
-    
+
     public String nodeToString() {
         return XmlUtils.nodeToString(getNode());
     }
@@ -67,13 +61,13 @@ public abstract class AbstractTag implements Tag {
         this.node = node;
     }
 
-    public void toggleSkipExecute(Boolean isTrue) {
-        Boolean r = isSkipExecuteStack.pop();
-        isSkipExecuteStack.push(isTrue);
+    public void toggleExecute(Boolean isTrue) {
+        Boolean r = isExecuteTagStack.pop();
+        isExecuteTagStack.push(isTrue);
     }
 
-    public void isSkipExecute(boolean isSkip) {
-        isSkipExecuteStack.push(isSkip);
+    public void isExecute(boolean isSkip) {
+        isExecuteTagStack.push(isSkip);
     }
 
     // public boolean isSkipExecute() {
@@ -84,18 +78,14 @@ public abstract class AbstractTag implements Tag {
     // }
     // }
 
-    public void clearTopSkipExecuteFlag() {
-        if (!isSkipExecuteStack.isEmpty()) {
-            isSkipExecuteStack.pop();
+    public void clearTopExecuteFlag() {
+        if (!isExecuteTagStack.isEmpty()) {
+            isExecuteTagStack.pop();
         }
     }
 
-    public boolean isSkipExecutePeek() {
-        if (!isSkipExecuteStack.isEmpty()) {
-            return isSkipExecuteStack.peek();
-        } else {
-            return false;
-        }
+    public boolean isExecutePeek() {
+        return isExecuteTagStack.peek();
     }
 
 }

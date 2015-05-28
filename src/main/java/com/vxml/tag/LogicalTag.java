@@ -1,34 +1,38 @@
 package com.vxml.tag;
 
+import java.util.Iterator;
 import java.util.Stack;
 
 public class LogicalTag extends AbstractTag {
-    private static Stack<Boolean> logicalBlockExecuted;
+    private static Stack<Boolean> logicalConditionStateStack;
 
     static {
-        logicalBlockExecuted = new Stack<Boolean>();
+        logicalConditionStateStack = new Stack<Boolean>();
     }
 
-    public Boolean isLogicalBlockExecuted() {
-        return logicalBlockExecuted.peek();
+    
+    public void ifConditionState(Boolean isTrue) {
+        logicalConditionStateStack.push(isTrue);
     }
-
-    public void setLogicalBlockExecuted(boolean isTrue) {
-        logicalBlockExecuted.add(isTrue);
-        isSkipExecute(!isTrue);
-    }
-
-    public void toggleLogicalBlockStatus(Boolean isTrue) {
-        Boolean r = logicalBlockExecuted.pop();
-        logicalBlockExecuted.push(isTrue);
-        toggleSkipExecute(!isTrue);
-    }
-
-    public void clearLogicalBlockStatus() {
-        logicalBlockExecuted.pop();
-        clearTopSkipExecuteFlag();
+   
+    
+    public void clearTopIfCondition() {
+        logicalConditionStateStack.pop();
     }
     
+    public boolean isAllParentIfConditionsAreTrue() {
+        Iterator<Boolean> itr = logicalConditionStateStack.iterator();
+        while(itr.hasNext()) {
+            Boolean top = itr.next();
+            if (itr.hasNext()) {
+                System.out.println(top);
+                if (!top) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     
 //    public boolean isSkipExecute() {
 //        if (!isSkipExecuteStack.isEmpty()) {
