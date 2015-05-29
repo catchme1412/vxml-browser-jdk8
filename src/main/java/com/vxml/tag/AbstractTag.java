@@ -23,7 +23,7 @@ public abstract class AbstractTag implements Tag {
 
     @Override
     public void execute() {
-        System.out.println("AbstractTag.execute..." + node);
+//        System.out.println("AbstractTag.execute..." + node);
     }
 
     @Override
@@ -57,6 +57,10 @@ public abstract class AbstractTag implements Tag {
         return node;
     }
 
+    public String getParentTag() {
+        return node.getParentNode().getNodeName();
+    }
+    
     public void setNode(Node node) {
         this.node = node;
     }
@@ -86,6 +90,31 @@ public abstract class AbstractTag implements Tag {
 
     public boolean isExecutePeek() {
         return isExecuteTagStack.peek();
+    }
+
+    // similar to walk
+    public void executeChildTree(Node startNode) {
+        if (XmlUtils.isEmptyOrComment(startNode)) {
+            return;
+        }
+
+        // recurse
+        for (Node child = startNode.getFirstChild(); child != null; child = child.getNextSibling()) {
+            AbstractTag tag = (AbstractTag) TagFactory.get(child);
+            if (XmlUtils.isEmptyOrComment(child)) {
+                continue;
+            }
+            // System.out.println("START:" + node.getNodeType() + "::" + tag);
+            // stack.add(tag);
+            tag.startTag();
+            // boolean skipBkp = isSkipExecute;
+            ((AbstractTag) tag).tryExecute();
+            executeChildTree(child);
+            tag.endTag();
+            // isSkipExecute = skipBkp;
+        }
+
+        // System.out.println("END:" + tag);
     }
 
 }

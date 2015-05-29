@@ -51,7 +51,7 @@ public class VxmlExecutionContext {
         return tagMap.get(id);
     }
 
-    public void assignVar(String var, String val) {
+    public void assignVar(String var, Object val) {
         vxmlScriptEngine.assignScriptVar(var, val);
     }
     
