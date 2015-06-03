@@ -6,7 +6,6 @@ public class ScriptTag extends AbstractTag {
 
     private String src;
     
-
     @Override
     public void execute() {
         if (src != null) {

@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import junit.framework.Assert;
 
-public class HelloworldTest {
+public class LogicalTagTest {
 
     private VxmlBrowserDriver driver;
 

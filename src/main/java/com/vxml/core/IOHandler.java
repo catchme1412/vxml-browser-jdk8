@@ -1,31 +1,68 @@
 package com.vxml.core;
 
+import java.io.IOException;
 import java.util.Queue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import com.vxml.core.input.ConsoleInput;
+import com.vxml.core.input.ProcessTrigger;
 import com.vxml.core.input.VxmlNoInputEvent;
 
 public class IOHandler {
 
     private Queue<String> dtmfInputQueue;
 
-    private Queue<String> outputQueue;
+    private Queue<OutputWrapper> outputQueue;
 
     public IOHandler() {
         System.out.println("FFFF");
     }
     
-    public Queue<String> getOutputQueue() {
+    public Queue<OutputWrapper> getOutputQueue() {
         return outputQueue;
     }
 
-    public void setOutputQueue(Queue<String> outputQueue) {
+    public void setOutputQueue(Queue<OutputWrapper> outputQueue) {
         this.outputQueue = outputQueue;
     }
 
-    public void recordOutput(String output) {
-        this.outputQueue.add(output);
+    public void recordOutput(OutputType type, String output) {
+        if (this.outputQueue == null) {
+            this.outputQueue = new LinkedBlockingQueue<OutputWrapper>();
+        }
+        this.outputQueue.add(new OutputWrapper(type, output));
+        switch(type) {
+        case AUDIO:
+//            play(output);
+            break;
+        case TTS:
+//            tts(output);
+        }
+    }
+
+    private void tts(String text) {
+        String[] cmd = { "/bin/sh", "-c", "echo '" + text + "' | festival --tts" };
+        try {
+            new ProcessTrigger().trigger(cmd);
+        } catch (IOException | InterruptedException | ExecutionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    private void play(String output) {
+        String[] cmd = { "/bin/sh", "-c", "wget " + output + " -O /tmp/ivr.wav" };
+        try {
+            Process p = Runtime.getRuntime().exec(cmd);
+            //wait for the file to download
+            p.waitFor();
+            String[] cmdWav = { "/bin/sh", "-c", "play /tmp/ivr.wav" };
+            new ProcessTrigger().trigger(cmdWav);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public String nextOutput() {
@@ -40,7 +77,7 @@ public class IOHandler {
                 }
             }
         }
-        return outputQueue.remove();
+        return outputQueue.remove().getOutput();
     }
 
     public Queue<String> getDtmfInputQueue() {

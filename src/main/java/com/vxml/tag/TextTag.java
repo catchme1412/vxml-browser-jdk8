@@ -1,15 +1,16 @@
 package com.vxml.tag;
 
+import com.vxml.core.OutputType;
 import com.vxml.core.VxmlExecutionContext;
 
 public class TextTag extends AbstractTag {
 
     @Override
     public void startTag() {
-        if ("script".equals(getParentTag())) {
-            isExecute(false);
-        } else {
+        if ("prompt".equals(getParentTag())) {
             isExecute(true);
+        } else {
+            isExecute(false);
         }
     }
 
@@ -17,7 +18,7 @@ public class TextTag extends AbstractTag {
     public void execute() {
         String text = getNode().getTextContent().trim();
         // System.out.println("TTS:" + text);
-        VxmlExecutionContext.ioHandler.recordOutput(text);
+        VxmlExecutionContext.ioHandler.recordOutput(OutputType.TTS, text);
     }
     
     @Override

@@ -17,7 +17,6 @@ public class ProcessTrigger {
         ProcessKillThread task2 = new ProcessKillThread(p);
         Future<String> f1 = executorService.submit(task2);
         f.cancel(true);
-        
         return f1.get();
     }
     

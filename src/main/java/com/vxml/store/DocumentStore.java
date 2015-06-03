@@ -70,7 +70,7 @@ public class DocumentStore {
 	public StringBuilder getData(URI uri) {
 		StringBuilder builder = new StringBuilder();
 		try {
-			InputStream in = getInputStream(uri);
+			InputStream in = getInputStream(getFullUri(uri.toString()));
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			String line;
 			while ((line = reader.readLine()) != null) {

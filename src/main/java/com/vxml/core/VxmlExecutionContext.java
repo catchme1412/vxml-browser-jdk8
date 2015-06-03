@@ -11,6 +11,7 @@ public class VxmlExecutionContext {
     private VxmlScriptEngine vxmlScriptEngine;
     // mainly for form when referred from goto
     private Map<String, Tag> tagMap;
+    static final String SUBDIALOG_NAME = ".subdialogName";
     public static IOHandler ioHandler;
 
     public VxmlExecutionContext() {
@@ -18,7 +19,7 @@ public class VxmlExecutionContext {
         tagMap = new HashMap<String, Tag>();
         ioHandler = new IOHandler();
         ioHandler.setDtmfInputQueue(new LinkedBlockingDeque<String>());
-        ioHandler.setOutputQueue(new LinkedBlockingDeque<String>());
+        ioHandler.setOutputQueue(new LinkedBlockingDeque<OutputWrapper>());
     }
 
     public void executeScriptFile(String src) {
@@ -52,13 +53,35 @@ public class VxmlExecutionContext {
     }
 
     public void assignVar(String var, Object val) {
-        vxmlScriptEngine.assignScriptVar(var, val);
+        String subdialogName = getCurrentSubdialogName();
+        String varNameKey = subdialogName != null ? subdialogName + "." + var : var;
+        vxmlScriptEngine.assignScriptVar(varNameKey, val);
     }
     
     public static void main(String[] args) {
         VxmlExecutionContext t = new VxmlExecutionContext();
         t.executeScriptFile("http://localhost:8585/ivr/common/js/parseXmlWithAttrToObject.js");
         t.executeScript("parseXmlWithAttrToObject('<?xml version=\"1.0\" encoding=\"UTF-8\"?> <?access-control allow=\"*\"?> <response>   <loyaltyTier>SILVER</loyaltyTier> </response> ')");
+    }
+
+    public Object getScriptVar(String var) {
+        String scriptVar = (String) vxmlScriptEngine.eval(VxmlScriptEngine.getSubdialogNameKey());
+        
+        String subdialogName = null;
+        if (scriptVar instanceof String) {
+            scriptVar = (String) scriptVar;
+        }
+        String varNameKey = subdialogName != null ? subdialogName + "." + var : var;
+        return vxmlScriptEngine.getScriptVar(varNameKey);
+    }
+    
+    public String getCurrentSubdialogName() {
+        Object subdialogName = VxmlBrowser.getVxmlExecutionContext().getScriptVar(VxmlScriptEngine.getSubdialogNameKey());
+        if (subdialogName instanceof String) {
+            return (String) subdialogName;
+        } else {
+            return null;
+        }
     }
 
 }
