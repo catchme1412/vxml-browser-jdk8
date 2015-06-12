@@ -5,6 +5,7 @@ import org.w3c.dom.NodeList;
 
 import com.vxml.core.VxmlBrowser;
 import com.vxml.core.VxmlDoc;
+import com.vxml.core.VxmlExecutionContext;
 
 public class SubdialogTag extends AbstractTag {
 
@@ -20,29 +21,32 @@ public class SubdialogTag extends AbstractTag {
     @Override
     public void execute() {
         src = src != null ? src : (String) VxmlBrowser.getVxmlExecutionContext().getScriptVar(srcexpr);
+        VxmlExecutionContext.markSubdialog(name);
         createParams();
-        markSubdialog(name);
         new VxmlDoc(src).play();
     }
 
     @Override
     public void endTag() {
-        clearTopSubdialogFlag();
+        VxmlExecutionContext.clearTopSubdialogFlag();
     }
 
     private void createParams() {
         NodeList paramList = getNode().getChildNodes();
         for (int i = 0; i < paramList.getLength(); i++) {
             Node node = paramList.item(i);
-            if ("param".equals(node.getNodeName())) {
-                String param = node.getAttributes().getNamedItem("expr").getNodeValue();
-                Object val = VxmlBrowser.getVxmlExecutionContext().getScriptVar(param);
-                createParamEntry(param, val);
+            boolean isParamTag = "param".equals(node.getNodeName());
+            if (isParamTag) {
+                String name = node.getAttributes().getNamedItem("name").getNodeValue();
+                String expr = node.getAttributes().getNamedItem("expr").getNodeValue();
+                createParamEntry(name, expr);
             }
         }
     }
 
     private void createParamEntry(String param, Object val) {
-        VxmlBrowser.getVxmlExecutionContext().assignVar(name + "." + param, val);
+        VxmlBrowser.getVxmlExecutionContext().assignVar(param, val);
+        String va = (String) VxmlBrowser.getVxmlExecutionContext().getScriptVar("paramPassed");
+        System.out.println(va);
     }
 }

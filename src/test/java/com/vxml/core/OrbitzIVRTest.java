@@ -5,8 +5,6 @@ import java.net.URISyntaxException;
 import org.junit.After;
 import org.junit.Test;
 
-import junit.framework.Assert;
-
 public class OrbitzIVRTest {
 
     private VxmlBrowserDriver driver;

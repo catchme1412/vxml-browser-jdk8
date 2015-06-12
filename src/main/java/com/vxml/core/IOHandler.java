@@ -16,10 +16,6 @@ public class IOHandler {
 
     private Queue<OutputWrapper> outputQueue;
 
-    public IOHandler() {
-        System.out.println("FFFF");
-    }
-    
     public Queue<OutputWrapper> getOutputQueue() {
         return outputQueue;
     }
@@ -91,7 +87,7 @@ public class IOHandler {
     public String readInput() throws VxmlNoInputEvent {
         String input = null;
         int i = 0;
-        
+        System.err.println("INPUT>");
         while (dtmfInputQueue.isEmpty() && i++ < 50) {
             try {
                 //give some time for the input thread to provide data.

@@ -2,8 +2,6 @@ package com.vxml.core;
 
 import java.net.URISyntaxException;
 
-import com.vxml.tag.AbstractTag;
-
 public class VxmlBrowserDriver {
 
     private VxmlBrowser vxmlBrowser;
@@ -23,7 +21,9 @@ public class VxmlBrowserDriver {
     
     public void waitForCompletion() {
         try {
-            thread.join();
+            if (thread != null) {
+                thread.join();
+            }
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

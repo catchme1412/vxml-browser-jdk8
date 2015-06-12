@@ -2,6 +2,7 @@ package com.vxml.core;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Stack;
 
 import com.vxml.store.DocumentStore;
 
@@ -9,12 +10,22 @@ public class VxmlBrowser {
 
     private static VxmlExecutionContext vxmlExecutionContext;
 
+    private static Stack<VxmlExecutionContext> vxmlExecutionContextStack;
+
     private String entryPointUrl;
-    
+
     public VxmlBrowser() {
         vxmlExecutionContext = new VxmlExecutionContext();
+        vxmlExecutionContextStack.add(vxmlExecutionContext);
     }
 
+    public void pushNewExecutionContextForSubdialog() {
+        vxmlExecutionContextStack.add(new VxmlExecutionContext());
+    }
+    
+    public void clearTopExecutionContextForSubdialog() {
+        vxmlExecutionContextStack.pop();
+    }
 
     public void setEntryPointUrl(String entryPointUrl) throws URISyntaxException {
         this.entryPointUrl = entryPointUrl;
@@ -33,8 +44,8 @@ public class VxmlBrowser {
         vxmlBrowser.start();
     }
 
-
     public static VxmlExecutionContext getVxmlExecutionContext() {
-        return vxmlExecutionContext;
+        return vxmlExecutionContextStack.peek();
     }
+
 }

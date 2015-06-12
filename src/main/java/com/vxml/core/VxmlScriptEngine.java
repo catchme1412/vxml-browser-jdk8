@@ -3,10 +3,14 @@ package com.vxml.core;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.net.URI;
 
+import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+
+import jdk.nashorn.api.scripting.JSObject;
 
 import com.vxml.store.DocumentStore;
 import com.vxml.store.VxmlException;
@@ -86,10 +90,12 @@ public class VxmlScriptEngine {
         return scriptEngine.get(var);
     }
     
-
+    public Object invokeFunction (String name, Object... args) throws NoSuchMethodException, ScriptException {
+        return ((Invocable)scriptEngine).invokeFunction(name, args);
+    }
     private void initalizeScriptEngine() throws ScriptException {
         ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine engine = manager.getEngineByName("js");
+        ScriptEngine engine = manager.getEngineByName("nashorn");
         scriptEngine = engine;
         scriptEngine.eval(FUNCTION_JSON_PARSE);
 
@@ -111,11 +117,16 @@ public class VxmlScriptEngine {
     }
 
     public Object executeScriptFile(String src) {
-        StringBuilder script = new DocumentStore().getData(src);
-        return eval(script.toString());
+//        StringBuilder script = new DocumentStore().getData(src);
+        URI fullUrl = DocumentStore.getFullUri(src);
+        return eval("load('"+ fullUrl.toString() +"');");
     }
     
     public static String getSubdialogNameKey() {
         return VxmlScriptEngine.SCRIPT_EXECUTION_NAME_SPACE + VxmlExecutionContext.SUBDIALOG_NAME;
+    }
+    
+    public String scopeVars() {
+        return scriptEngine.getFactory().getNames().toString();
     }
 }

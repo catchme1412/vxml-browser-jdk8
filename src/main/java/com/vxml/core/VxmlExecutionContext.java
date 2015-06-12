@@ -2,6 +2,7 @@ package com.vxml.core;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import com.vxml.tag.Tag;
@@ -11,6 +12,9 @@ public class VxmlExecutionContext {
     private VxmlScriptEngine vxmlScriptEngine;
     // mainly for form when referred from goto
     private Map<String, Tag> tagMap;
+
+    private static Stack<String> isSubdialogStack;
+
     static final String SUBDIALOG_NAME = ".subdialogName";
     public static IOHandler ioHandler;
 
@@ -20,6 +24,9 @@ public class VxmlExecutionContext {
         ioHandler = new IOHandler();
         ioHandler.setDtmfInputQueue(new LinkedBlockingDeque<String>());
         ioHandler.setOutputQueue(new LinkedBlockingDeque<OutputWrapper>());
+
+        isSubdialogStack = new Stack<String>();
+        isSubdialogStack.push(null);
     }
 
     public void executeScriptFile(String src) {
@@ -57,7 +64,11 @@ public class VxmlExecutionContext {
         String varNameKey = subdialogName != null ? subdialogName + "." + var : var;
         vxmlScriptEngine.assignScriptVar(varNameKey, val);
     }
-    
+
+    public void assignVarWithoutSubdialog(String var, Object val) {
+        vxmlScriptEngine.assignScriptVar(var, val);
+    }
+
     public static void main(String[] args) {
         VxmlExecutionContext t = new VxmlExecutionContext();
         t.executeScriptFile("http://localhost:8585/ivr/common/js/parseXmlWithAttrToObject.js");
@@ -65,23 +76,37 @@ public class VxmlExecutionContext {
     }
 
     public Object getScriptVar(String var) {
-        String scriptVar = (String) vxmlScriptEngine.eval(VxmlScriptEngine.getSubdialogNameKey());
+
+        String subdialogName = getCurrentSubdialogName();
         
-        String subdialogName = null;
-        if (scriptVar instanceof String) {
-            scriptVar = (String) scriptVar;
-        }
         String varNameKey = subdialogName != null ? subdialogName + "." + var : var;
         return vxmlScriptEngine.getScriptVar(varNameKey);
     }
-    
+
     public String getCurrentSubdialogName() {
-        Object subdialogName = VxmlBrowser.getVxmlExecutionContext().getScriptVar(VxmlScriptEngine.getSubdialogNameKey());
-        if (subdialogName instanceof String) {
-            return (String) subdialogName;
-        } else {
-            return null;
+        return isSubdialogPeek();
+    }
+
+    public static void markSubdialog(String subdialogName) {
+        isSubdialogStack.push(subdialogName);
+    }
+
+    public static void clearTopSubdialogFlag() {
+        if (!isSubdialogStack.isEmpty()) {
+            isSubdialogStack.pop();
         }
+    }
+
+    public static String isSubdialogPeek() {
+        return isSubdialogStack.peek();
+    }
+
+    public static boolean isInsideSubdialog() {
+        return isSubdialogPeek() != null;
+    }
+    
+    public String getScriptVars() {
+        return vxmlScriptEngine.scopeVars();
     }
 
 }

@@ -18,7 +18,7 @@ public class DataTag extends AbstractTag {
 		StringBuilder result = null;
 		try {
 			result = new DocumentStore().getData(new URI(queryParams.toString()));
-			VxmlBrowser.getVxmlExecutionContext().assignVar(name, result.toString().replaceAll("'", "\\\\'"));
+			VxmlBrowser.getVxmlExecutionContext().assignVarWithoutSubdialog(name, result.toString().replaceAll("'", "\\\\'"));
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}

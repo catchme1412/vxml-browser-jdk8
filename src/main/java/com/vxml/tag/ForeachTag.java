@@ -2,7 +2,7 @@ package com.vxml.tag;
 
 import java.util.List;
 
-import sun.org.mozilla.javascript.internal.NativeArray;
+import jdk.nashorn.internal.objects.NativeArray;
 
 import com.vxml.core.VxmlBrowser;
 
@@ -14,6 +14,7 @@ public class ForeachTag extends AbstractTag {
     @Override
     public void startTag() {
         VxmlBrowser.getVxmlExecutionContext().executeScript("var " + item);
+        VxmlBrowser.getVxmlExecutionContext().executeScript("var " + array);
         isExecute(isExecutePeek());
     }
 
@@ -28,15 +29,15 @@ public class ForeachTag extends AbstractTag {
         } else if (arr instanceof NativeArray) {
             NativeArray ary = (NativeArray) arr;
             Object[] a = new Object[(int) ary.getLength()];
-            for (Object o : ary.getIds()) {
-                int index = (Integer) o;
-                a[index] = ary.get(index, null);
-                Object val = a[index];
-
-                VxmlBrowser.getVxmlExecutionContext().assignVar(item, val);
-                System.out.println("LOOOP:" + o);
-                executeChildTree(getNode());
-            }
+//            for (Object o : ary.getIds()) {
+//                int index = (Integer) o;
+//                a[index] = ary.get(index, null);
+//                Object val = a[index];
+//
+//                VxmlBrowser.getVxmlExecutionContext().assignVar(item, val);
+//                System.out.println("LOOOP:" + o);
+//                executeChildTree(getNode());
+//            }
         }
         if (array instanceof String) {
             Object val = VxmlBrowser.getVxmlExecutionContext().executeScript(array.toString());

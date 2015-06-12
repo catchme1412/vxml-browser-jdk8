@@ -2,28 +2,33 @@ package com.vxml.core;
 
 import java.net.URISyntaxException;
 
-import org.junit.After;
-import org.junit.Test;
-
 import junit.framework.Assert;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class LogicalTagTest {
 
     private VxmlBrowserDriver driver;
 
+    @Before
     public void init() throws URISyntaxException {
         driver = new VxmlBrowserDriver();
         VxmlBrowser vxmlBrowser = new VxmlBrowser();
         driver.setBrowser(vxmlBrowser);
     }
 
+    @Test
     public void test() throws URISyntaxException {
         driver.setEntryPointUrl("http://localhost:8082/com.vxml.browser/test/audio.vxml");
         driver.start();
         String o = driver.nextOuput();
         Assert.assertEquals("Audio file demonstration", o);
+        driver.waitForCompletion();
     }
 
+    @Test
     public void testCondition() throws URISyntaxException, InterruptedException {
         driver.setEntryPointUrl("http://localhost:8082/com.vxml.browser/test/nestedIf.vxml");
         driver.start();
@@ -42,9 +47,11 @@ public class LogicalTagTest {
         o = driver.nextOuput();
         System.out.println(o);
         Assert.assertEquals("Both if true", o);
+        driver.waitForCompletion();
 
     }
-
+    
+    @Test
     public void testSimpleLogicalCondition() throws URISyntaxException, InterruptedException {
         driver.setEntryPointUrl("http://localhost:8082/com.vxml.browser/test/ifElseIfElseWithNoGrammar.vxml");
         driver.start();
@@ -54,6 +61,7 @@ public class LogicalTagTest {
         driver.nextInput("1");
         o = driver.nextOuput();
         System.out.println(o);
+        driver.waitForCompletion();
     }
 
     @After
@@ -140,6 +148,7 @@ public class LogicalTagTest {
         System.err.println("OUTPUT:" + o);
         o = driver.nextOuput();
         Assert.assertEquals("Both if true", o);
+        driver.waitForCompletion();
         
     }
     
