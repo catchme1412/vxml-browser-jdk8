@@ -13,7 +13,6 @@ public class VxmlExecutionContext {
     // mainly for form when referred from goto
     private Map<String, Tag> tagMap;
 
-    private static Stack<String> isSubdialogStack;
 
     static final String SUBDIALOG_NAME = ".subdialogName";
     public static IOHandler ioHandler;
@@ -25,8 +24,6 @@ public class VxmlExecutionContext {
         ioHandler.setDtmfInputQueue(new LinkedBlockingDeque<String>());
         ioHandler.setOutputQueue(new LinkedBlockingDeque<OutputWrapper>());
 
-        isSubdialogStack = new Stack<String>();
-        isSubdialogStack.push(null);
     }
 
     public void executeScriptFile(String src) {
@@ -34,6 +31,11 @@ public class VxmlExecutionContext {
 
     }
 
+    /**
+     * Used when getScriptVar cannot return the value. For example if the expr
+     * is a combination of more than one variable getScriptVar will fail.
+     * 
+     */
     public Object executeScript(String script) {
         return vxmlScriptEngine.eval(script);
     }
@@ -60,9 +62,7 @@ public class VxmlExecutionContext {
     }
 
     public void assignVar(String var, Object val) {
-        String subdialogName = getCurrentSubdialogName();
-        String varNameKey = subdialogName != null ? subdialogName + "." + var : var;
-        vxmlScriptEngine.assignScriptVar(varNameKey, val);
+        vxmlScriptEngine.assignScriptVar(var, val);
     }
 
     public void assignVarWithoutSubdialog(String var, Object val) {
@@ -77,33 +77,9 @@ public class VxmlExecutionContext {
 
     public Object getScriptVar(String var) {
 
-        String subdialogName = getCurrentSubdialogName();
-        
-        String varNameKey = subdialogName != null ? subdialogName + "." + var : var;
-        return vxmlScriptEngine.getScriptVar(varNameKey);
+        return vxmlScriptEngine.getScriptVar(var);
     }
 
-    public String getCurrentSubdialogName() {
-        return isSubdialogPeek();
-    }
-
-    public static void markSubdialog(String subdialogName) {
-        isSubdialogStack.push(subdialogName);
-    }
-
-    public static void clearTopSubdialogFlag() {
-        if (!isSubdialogStack.isEmpty()) {
-            isSubdialogStack.pop();
-        }
-    }
-
-    public static String isSubdialogPeek() {
-        return isSubdialogStack.peek();
-    }
-
-    public static boolean isInsideSubdialog() {
-        return isSubdialogPeek() != null;
-    }
     
     public String getScriptVars() {
         return vxmlScriptEngine.scopeVars();

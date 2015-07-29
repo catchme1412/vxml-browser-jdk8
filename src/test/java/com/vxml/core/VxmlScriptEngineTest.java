@@ -66,7 +66,7 @@ public class VxmlScriptEngineTest {
         vxmlScriptEngine.eval("var a = 1");
         vxmlScriptEngine.eval("var b = a");
         Object r = vxmlScriptEngine.getScriptVar("b");
-        Assert.assertEquals(new Double(1d), r);
+        Assert.assertEquals(new Integer(1), r);
     }
 
     @Test

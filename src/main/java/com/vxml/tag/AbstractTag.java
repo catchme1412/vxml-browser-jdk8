@@ -13,6 +13,9 @@ public abstract class AbstractTag implements Tag {
 
     private Node node;
     private static Stack<Boolean> isExecuteTagStack;
+    
+    private static boolean isInsideSubdialog;
+    
     static {
         isExecuteTagStack = new Stack<Boolean>();
         isExecuteTagStack.push(true);
@@ -36,7 +39,7 @@ public abstract class AbstractTag implements Tag {
 
     public void tryExecute() {
         if (((AbstractTag) this).isExecutePeek()) {
-            System.out.println("EXECUTING:" + this + " | " + getDocumentURI() + " | subdialog:" + VxmlExecutionContext.isSubdialogPeek());
+            System.out.println("EXECUTING:" + this + " | " + getDocumentURI() );
             execute();
         } else {
             // System.out.println("SKIPPING:" + this);

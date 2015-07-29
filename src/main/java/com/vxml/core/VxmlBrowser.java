@@ -13,17 +13,20 @@ public class VxmlBrowser {
     private static Stack<VxmlExecutionContext> vxmlExecutionContextStack;
 
     private String entryPointUrl;
+    static {
+        vxmlExecutionContextStack = new Stack<>(); 
+    }
 
     public VxmlBrowser() {
         vxmlExecutionContext = new VxmlExecutionContext();
         vxmlExecutionContextStack.add(vxmlExecutionContext);
     }
 
-    public void pushNewExecutionContextForSubdialog() {
+    public static void pushNewExecutionContextForSubdialog() {
         vxmlExecutionContextStack.add(new VxmlExecutionContext());
     }
     
-    public void clearTopExecutionContextForSubdialog() {
+    public static void clearTopExecutionContextForSubdialog() {
         vxmlExecutionContextStack.pop();
     }
 

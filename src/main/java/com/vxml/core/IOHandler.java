@@ -29,12 +29,12 @@ public class IOHandler {
             this.outputQueue = new LinkedBlockingQueue<OutputWrapper>();
         }
         this.outputQueue.add(new OutputWrapper(type, output));
-        switch(type) {
+        switch (type) {
         case AUDIO:
-//            play(output);
+            play(output);
             break;
         case TTS:
-//            tts(output);
+            tts(output);
         }
     }
 
@@ -52,7 +52,7 @@ public class IOHandler {
         String[] cmd = { "/bin/sh", "-c", "wget " + output + " -O /tmp/ivr.wav" };
         try {
             Process p = Runtime.getRuntime().exec(cmd);
-            //wait for the file to download
+            // wait for the file to download
             p.waitFor();
             String[] cmdWav = { "/bin/sh", "-c", "play /tmp/ivr.wav" };
             new ProcessTrigger().trigger(cmdWav);
@@ -63,10 +63,10 @@ public class IOHandler {
 
     public String nextOutput() {
         if (outputQueue.isEmpty()) {
-            while(outputQueue.isEmpty()) {
+            while (outputQueue.isEmpty()) {
                 try {
                     Thread.sleep(1000);
-//                    System.out.println("waiting for output");
+                    // System.out.println("waiting for output");
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -90,9 +90,9 @@ public class IOHandler {
         System.err.println("INPUT>");
         while (dtmfInputQueue.isEmpty() && i++ < 50) {
             try {
-                //give some time for the input thread to provide data.
+                // give some time for the input thread to provide data.
                 Thread.sleep(1000);
-//                System.out.println("waiting for input");
+                // System.out.println("waiting for input");
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

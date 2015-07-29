@@ -25,6 +25,7 @@ public class OrbitzIVRTest {
         String o = driver.nextOuput();
         System.out.println(o);
         driver.nextInput("1");
+        driver.nextInput("1");
         o = driver.nextOuput();
         System.out.println(o);
         o = driver.nextOuput();

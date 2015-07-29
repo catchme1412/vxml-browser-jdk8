@@ -8,7 +8,7 @@ import java.util.concurrent.Callable;
 public class ConsoleInputReadTask implements Callable<String> {
     public String call() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print("input>");
+        System.out.print("input>>");
         String input;
         do {
             try {
