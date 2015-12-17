@@ -2,7 +2,6 @@ package com.vxml.core;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import com.vxml.tag.Tag;

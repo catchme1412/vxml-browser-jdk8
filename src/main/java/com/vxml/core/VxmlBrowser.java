@@ -43,7 +43,7 @@ public class VxmlBrowser {
 
     public static void main(String args[]) throws Exception {
         VxmlBrowser vxmlBrowser = new VxmlBrowser();
-        vxmlBrowser.setEntryPointUrl("http://localhost:8585/ivr/testing/sao.vxml");
+        vxmlBrowser.setEntryPointUrl("http://localhost:8585/newCallController.htm?dnis=8008247019&ani=19733689400&uuid=5FB69FD283A411E58F19442B03ABD780&newCallSuccess=true");
         vxmlBrowser.start();
     }
 

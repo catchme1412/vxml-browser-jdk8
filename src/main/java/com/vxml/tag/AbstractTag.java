@@ -4,9 +4,6 @@ import java.util.Stack;
 
 import org.w3c.dom.Node;
 
-import com.vxml.core.VxmlBrowser;
-import com.vxml.core.VxmlExecutionContext;
-import com.vxml.core.VxmlScriptEngine;
 import com.vxml.utils.XmlUtils;
 
 public abstract class AbstractTag implements Tag {
@@ -97,8 +94,6 @@ public abstract class AbstractTag implements Tag {
     public boolean isExecutePeek() {
         return isExecuteTagStack.peek();
     }
-
-
 
     // similar to walk
     public void executeChildTree(Node startNode) {

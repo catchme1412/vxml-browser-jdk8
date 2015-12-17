@@ -2,10 +2,10 @@ package com.vxml.core;
 
 import java.net.URISyntaxException;
 
+import junit.framework.Assert;
+
 import org.junit.After;
 import org.junit.Test;
-
-import junit.framework.Assert;
 
 public class ForeachTagTest {
 

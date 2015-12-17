@@ -3,8 +3,6 @@ package com.vxml.core;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.vxml.tag.AbstractTag;
-
 public class VxmlExecutionContextTest {
     
 //    VxmlExecutionContext vxmlExecutionContext;
@@ -25,7 +23,7 @@ public class VxmlExecutionContextTest {
     @Test
     public void testAssignVarInSubdialog() {
         browser.getVxmlExecutionContext().executeScript("var menuResults = {}");
-        AbstractTag.markSubdialog("menuResults");
+//        AbstractTag.markSubdialog("menuResults");
         Object t = VxmlBrowser.getVxmlExecutionContext().executeScript(VxmlScriptEngine.getSubdialogNameKey());
         browser.getVxmlExecutionContext().assignVar("a", 10);
         Object r = browser.getVxmlExecutionContext().getScriptVar("a");
@@ -65,7 +63,7 @@ public class VxmlExecutionContextTest {
     @Test
     public void testAssignAndExecuteWithSubdialog() {
         browser.getVxmlExecutionContext().executeScript("var menuResults = {}");
-        AbstractTag.markSubdialog("menuResults");
+//        AbstractTag.markSubdialog("menuResults");
         browser.getVxmlExecutionContext().assignVar(VxmlScriptEngine.getSubdialogNameKey(), "'string'");
         Object r = browser.getVxmlExecutionContext().executeScript(VxmlScriptEngine.getSubdialogNameKey());
         System.out.println(r);

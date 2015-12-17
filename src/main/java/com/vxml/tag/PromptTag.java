@@ -1,6 +1,5 @@
 package com.vxml.tag;
 
-import com.vxml.core.VxmlBrowser;
 
 public class PromptTag extends AbstractTag {
 

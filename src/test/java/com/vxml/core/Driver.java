@@ -1,7 +1,6 @@
 package com.vxml.core;
 
 import java.util.Collection;
-import java.util.Queue;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RecursiveAction;
