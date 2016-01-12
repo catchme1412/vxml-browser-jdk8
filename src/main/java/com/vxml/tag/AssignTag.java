@@ -9,16 +9,20 @@ public class AssignTag extends AbstractTag {
 
     @Override
     public void startTag() {
-//        VxmlBrowser.getVxmlExecutionContext().assignVar(name, null);
+//        getVxmlExecutor().assignVar(name, null);
     }
 
     @Override
     public void execute() {
-        Object val = VxmlBrowser.getVxmlExecutionContext().getScriptVar(expr);
-        if (val == null) {
-            val = VxmlBrowser.getVxmlExecutionContext().getScriptVar(expr);
+        Object val = expr;
+        Boolean r = (Boolean) getVxmlExecutor().executeScript("'string' === typeof "+ expr);
+        if (r != true) {
+            val = getVxmlExecutor().getScriptVar(expr);
+            if (val == null) {
+                val = getVxmlExecutor().executeScript(expr);
+            }
         }
-        VxmlBrowser.getVxmlExecutionContext().assignVar(name, val);
+        getVxmlExecutor().assignVar(name, val);
     }
 
 }

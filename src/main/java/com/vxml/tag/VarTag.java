@@ -12,13 +12,13 @@ public class VarTag extends AbstractTag {
         String varName = name;
         Object exprVal = expr;
         if (expr != null) {
-             exprVal = VxmlBrowser.getVxmlExecutionContext().getScriptVar(expr);
-             exprVal = exprVal != null ? exprVal : VxmlBrowser.getVxmlExecutionContext().executeScript(expr);
+             exprVal = getVxmlExecutor().getScriptVar(expr);
+             exprVal = exprVal != null ? exprVal : getVxmlExecutor().executeScript(expr);
              exprVal = exprVal == null ? expr : exprVal;
         } else {
-            exprVal = VxmlBrowser.getVxmlExecutionContext().getScriptVar(varName);
+            exprVal = getVxmlExecutor().getScriptVar(varName);
         }
-        VxmlBrowser.getVxmlExecutionContext().assignVar(varName, exprVal);
+        getVxmlExecutor().assignVar(varName, exprVal);
     }
 
 }

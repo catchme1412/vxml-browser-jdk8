@@ -14,7 +14,7 @@ public class ConsoleInputReadTask implements Callable<String> {
             try {
                 // wait until we have data to complete a readLine()
                 while (!br.ready()) {
-                    Thread.sleep(2000);
+                    Thread.sleep(20);
                 }
                 input = br.readLine();
             } catch (InterruptedException e) {

@@ -1,7 +1,9 @@
 package com.vxml.tag;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import jdk.nashorn.internal.objects.NativeArray;
 
 import com.vxml.core.VxmlBrowser;
@@ -13,17 +15,17 @@ public class ForeachTag extends AbstractTag {
 
     @Override
     public void startTag() {
-        VxmlBrowser.getVxmlExecutionContext().executeScript("var " + item);
-        VxmlBrowser.getVxmlExecutionContext().executeScript("var " + array);
+        getVxmlExecutor().executeScript("var " + item);
+        getVxmlExecutor().executeScript("var " + array);
         isExecute(isExecutePeek());
     }
 
     @Override
     public void execute() {
-        Object arr = VxmlBrowser.getVxmlExecutionContext().executeScript(array);
+        Object arr = getVxmlExecutor().executeScript(array);
         if (arr instanceof List) {
             for (Object o : (List) arr) {
-                VxmlBrowser.getVxmlExecutionContext().assignVar(item, o);
+                getVxmlExecutor().assignVar(item, o);
                 executeChildTree(getNode());
             }
         } else if (arr instanceof NativeArray) {
@@ -34,13 +36,24 @@ public class ForeachTag extends AbstractTag {
 //                a[index] = ary.get(index, null);
 //                Object val = a[index];
 //
-//                VxmlBrowser.getVxmlExecutionContext().assignVar(item, val);
+//                getVxmlExecutor().assignVar(item, val);
 //                System.out.println("LOOOP:" + o);
 //                executeChildTree(getNode());
 //            }
+        } else if (arr instanceof ScriptObjectMirror) {
+        	ScriptObjectMirror ary = (ScriptObjectMirror)arr;
+			BiConsumer action = new BiConsumer() {
+
+				@Override
+				public void accept(Object t, Object u) {
+					// TODO Auto-generated method stub
+					getVxmlExecutor().assignVar(item, u);
+				}
+			};
+			ary.forEach(action);
         }
         if (array instanceof String) {
-            Object val = VxmlBrowser.getVxmlExecutionContext().executeScript(array.toString());
+            Object val = getVxmlExecutor().executeScript(array.toString());
         }
     }
 

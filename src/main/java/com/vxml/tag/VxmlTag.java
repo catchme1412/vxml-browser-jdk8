@@ -15,7 +15,7 @@ public class VxmlTag extends AbstractTag {
     public void execute() {
         if (application != null && !appRootMap.containsKey(application)) {
             appRootMap.put(application, application);
-            new VxmlDoc(application).play();
+            new VxmlDoc(application).play(getVxmlExecutor());
             System.out.println("APP_ROOT is complete"); 
         }
     }

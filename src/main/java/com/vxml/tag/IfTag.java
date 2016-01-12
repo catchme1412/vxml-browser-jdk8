@@ -1,6 +1,5 @@
 package com.vxml.tag;
 
-import com.vxml.core.VxmlBrowser;
 
 public class IfTag extends LogicalTag {
 
@@ -8,8 +7,10 @@ public class IfTag extends LogicalTag {
 
     @Override
     public void startTag() {
-        Boolean isIfConditionTrue = (Boolean) VxmlBrowser.getVxmlExecutionContext().executeScript(cond);
-        ifConditionState(isIfConditionTrue);
+        Boolean isIfConditionTrue = false;
+        Object r = getVxmlExecutor().executeScript(cond);
+        isIfConditionTrue = (r instanceof Boolean) ? (Boolean)r : false;
+    	ifConditionState(isIfConditionTrue);
         Boolean isExecute = isIfConditionTrue && isExecutePeek();
         isExecute(isExecute);
     }

@@ -1,8 +1,8 @@
 package com.vxml.tag;
 
-import com.vxml.core.VxmlBrowser;
+import com.vxml.core.Input;
 import com.vxml.core.VxmlDoc;
-import com.vxml.core.input.VxmlNoInputEvent;
+import com.vxml.core.input.NoInputEvent;
 
 public class ChoiceTag extends AbstractTag {
 
@@ -10,21 +10,26 @@ public class ChoiceTag extends AbstractTag {
     private String expr;
 
     @Override
+    public void startTag() {
+    	// TODO Auto-generated method stub
+    	super.startTag();
+    }
+    @Override
     public void execute() {
-        String userInput = null;
+        Input userInput = null;
         try {
-            userInput = VxmlBrowser.getVxmlExecutionContext().ioHandler.readInput();
-        } catch (VxmlNoInputEvent e) {
+            userInput = getVxmlExecutor().readInput();
+        } catch (NoInputEvent | InterruptedException e) {
             e.printStackTrace();
         }
-        if (userInput != null && dtmf.equals(userInput)) {
-            System.out.println("USER CHOICE....." + userInput);
-            String url = (String) VxmlBrowser.getVxmlExecutionContext().executeScript(expr);
+        if (userInput != null && dtmf.equals(userInput.getInputChar())) {
+            System.out.println("USER CHOICE....." + userInput.getInputChar());
+            String url = (String) getVxmlExecutor().executeScript(expr);
             //TODO May lead to OutofMemory or StackOverFlow as the remaining tags in
             // this file may not be executed and may never be executed
-            new VxmlDoc(url).play();
+            new VxmlDoc(url).play(getVxmlExecutor());
         } else {
-            VxmlBrowser.getVxmlExecutionContext().requestDtmfInput();
+            getVxmlExecutor().requestDtmfInput();
         }
     }
 }

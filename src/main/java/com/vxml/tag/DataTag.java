@@ -18,7 +18,7 @@ public class DataTag extends AbstractTag {
 		StringBuilder result = null;
 		try {
 			result = new DocumentStore().getData(new URI(queryParams.toString()));
-			VxmlBrowser.getVxmlExecutionContext().assignVarWithoutSubdialog(name, result.toString().replaceAll("'", "\\\\'"));
+			getVxmlExecutor().assignVarWithoutSubdialog(name, result.toString().replaceAll("'", "\\\\'"));
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
@@ -33,7 +33,7 @@ public class DataTag extends AbstractTag {
 		for (int i = 0; i < nameListArray.length; i++) {
 			queryParams.append(nameListArray[i]);
 			queryParams.append("=");
-			queryParams.append(VxmlBrowser.getVxmlExecutionContext().getScriptVar(nameListArray[i]));
+			queryParams.append(getVxmlExecutor().getScriptVar(nameListArray[i]));
 			queryParams.append("&");
 		}
         return queryParams;

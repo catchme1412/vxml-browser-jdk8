@@ -9,9 +9,9 @@ public class ScriptTag extends AbstractTag {
     @Override
     public void execute() {
         if (src != null) {
-            VxmlBrowser.getVxmlExecutionContext().executeScriptFile(src);
+           getVxmlExecutor().executeScriptFile(src);
         } else {
-            VxmlBrowser.getVxmlExecutionContext().executeScript(getNode().getTextContent());
+           getVxmlExecutor().executeScript(getNode().getTextContent());
         }
     }
 }

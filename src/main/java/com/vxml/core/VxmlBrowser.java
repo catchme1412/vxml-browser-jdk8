@@ -8,47 +8,43 @@ import com.vxml.store.DocumentStore;
 
 public class VxmlBrowser {
 
-    private static VxmlExecutionContext vxmlExecutionContext;
-
-    private static Stack<VxmlExecutionContext> vxmlExecutionContextStack;
-
     private String entryPointUrl;
-    static {
-        vxmlExecutionContextStack = new Stack<>(); 
-    }
+    private VxmlExecutor vxmlExecutor;
 
-    public VxmlBrowser() {
-        vxmlExecutionContext = new VxmlExecutionContext();
-        vxmlExecutionContextStack.add(vxmlExecutionContext);
+    public VxmlBrowser(VxmlExecutor vxmlExecutor) {
+        this.vxmlExecutor = vxmlExecutor;
     }
 
     public static void pushNewExecutionContextForSubdialog() {
-        vxmlExecutionContextStack.add(new VxmlExecutionContext());
+    	
     }
     
     public static void clearTopExecutionContextForSubdialog() {
-        vxmlExecutionContextStack.pop();
     }
 
-    public void setEntryPointUrl(String entryPointUrl) throws URISyntaxException {
+    public void setEntryPointUrl(String entryPointUrl) {
         this.entryPointUrl = entryPointUrl;
-        URI uri = new URI(entryPointUrl);
+        URI uri = null;
+        try {
+            uri = new URI(entryPointUrl);
+        } catch (URISyntaxException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         DocumentStore.setDocBaseUrl(uri.getScheme() + "://" + uri.getAuthority());
     }
 
     public void start() {
         VxmlDoc vxmlDoc = new VxmlDoc(entryPointUrl);
-        vxmlDoc.play();
+        
+        vxmlDoc.play(vxmlExecutor);
     }
 
     public static void main(String args[]) throws Exception {
-        VxmlBrowser vxmlBrowser = new VxmlBrowser();
-        vxmlBrowser.setEntryPointUrl("http://localhost:8585/newCallController.htm?dnis=8008247019&ani=19733689400&uuid=5FB69FD283A411E58F19442B03ABD780&newCallSuccess=true");
-        vxmlBrowser.start();
+//        VxmlBrowser vxmlBrowser = new VxmlBrowser();
+//        vxmlBrowser.setEntryPointUrl("http://localho?st:8585/ivr/testing/development.vxml");
+//        vxmlBrowser.start();
     }
 
-    public static VxmlExecutionContext getVxmlExecutionContext() {
-        return vxmlExecutionContextStack.peek();
-    }
 
 }

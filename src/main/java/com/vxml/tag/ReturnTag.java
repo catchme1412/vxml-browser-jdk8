@@ -10,14 +10,13 @@ public class ReturnTag extends AbstractTag {
     public void execute() {
         
         for (String name : namelist.split(" ")) {
-            String scriptVar = (String) VxmlBrowser.getVxmlExecutionContext().getScriptVar(name);
-            System.out.println(scriptVar);
-            Object val = VxmlBrowser.getVxmlExecutionContext().getScriptVar(scriptVar);
-            VxmlBrowser.getVxmlExecutionContext().assignVar(scriptVar, val);
+            String scriptVar = (String) getVxmlExecutor().getScriptVar(name);
+            Object val = getVxmlExecutor().getScriptVar(scriptVar);
+            getVxmlExecutor().assignVar(scriptVar, val);
 //            if (scriptVar instanceof String) {
-//                VxmlBrowser.getVxmlExecutionContext().assignScriptVar(subDialogVariableName, "'" +scriptVar +"'");
+//                getVxmlExecutor().assignScriptVar(subDialogVariableName, "'" +scriptVar +"'");
 //            } else {
-//                VxmlBrowser.getVxmlExecutionContext().assignScriptVar(subDialogVariableName, scriptVar);
+//                getVxmlExecutor().assignScriptVar(subDialogVariableName, scriptVar);
 //            }
 //            System.err.println("In Return: " + subDialogVariableName + ":" + scriptVar);
         }

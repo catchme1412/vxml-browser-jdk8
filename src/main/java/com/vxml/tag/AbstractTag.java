@@ -4,18 +4,24 @@ import java.util.Stack;
 
 import org.w3c.dom.Node;
 
+import com.vxml.core.VxmlExecutor;
 import com.vxml.utils.XmlUtils;
 
 public abstract class AbstractTag implements Tag {
 
+    private static Stack<VxmlExecutor> vxmlExecutorStack;
+    
     private Node node;
     private static Stack<Boolean> isExecuteTagStack;
+    private static Stack<Boolean> bargeinStack;
     
-    private static boolean isInsideSubdialog;
     
     static {
         isExecuteTagStack = new Stack<Boolean>();
         isExecuteTagStack.push(true);
+        bargeinStack = new Stack<>();
+        bargeinStack.push(true);
+        vxmlExecutorStack = new Stack<>();
 
     }
 
@@ -36,7 +42,7 @@ public abstract class AbstractTag implements Tag {
 
     public void tryExecute() {
         if (((AbstractTag) this).isExecutePeek()) {
-            System.out.println("EXECUTING:" + this + " | " + getDocumentURI() );
+//            System.out.println("EXECUTING:" + this + " | " + getDocumentURI() );
             execute();
         } else {
             // System.out.println("SKIPPING:" + this);
@@ -73,6 +79,10 @@ public abstract class AbstractTag implements Tag {
         this.node = node;
     }
 
+    public void toggleBargein(Boolean isTrue) {
+        Boolean r = bargeinStack.pop();
+        bargeinStack.push(isTrue);
+    }
     public void toggleExecute(Boolean isTrue) {
         Boolean r = isExecuteTagStack.pop();
         isExecuteTagStack.push(isTrue);
@@ -94,6 +104,10 @@ public abstract class AbstractTag implements Tag {
     public boolean isExecutePeek() {
         return isExecuteTagStack.peek();
     }
+    
+    public boolean isBargeinPeek() {
+        return bargeinStack.peek();
+    }
 
     // similar to walk
     public void executeChildTree(Node startNode) {
@@ -103,14 +117,14 @@ public abstract class AbstractTag implements Tag {
 
         // recurse
         for (Node child = startNode.getFirstChild(); child != null; child = child.getNextSibling()) {
-            AbstractTag tag = (AbstractTag) TagFactory.get(child);
+            AbstractTag tag = (AbstractTag) TagFactory.get(child, getVxmlExecutor());
             if (XmlUtils.isEmptyOrComment(child)) {
                 continue;
             }
-            // System.out.println("START:" + node.getNodeType() + "::" + tag);
+             System.out.println("START:" + node.getNodeType() + "::" + tag);
             // stack.add(tag);
             tag.startTag();
-            // boolean skipBkp = isSkipExecute;
+            System.out.println("TAG:" + tag);
             ((AbstractTag) tag).tryExecute();
             executeChildTree(child);
             tag.endTag();
@@ -119,5 +133,18 @@ public abstract class AbstractTag implements Tag {
 
         // System.out.println("END:" + tag);
     }
+
+    public VxmlExecutor getVxmlExecutor() {
+        return vxmlExecutorStack.peek();
+    }
+
+    public void setVxmlExecutor(VxmlExecutor vxmlExecutor) {
+        this.vxmlExecutorStack.add(vxmlExecutor);
+    }
+
+	public void pushNewExecutionContextForSubdialog() {
+		this.vxmlExecutorStack.pop();
+		
+	}
 
 }

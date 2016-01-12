@@ -1,9 +1,8 @@
 package com.vxml.tag;
 
-import com.vxml.core.VxmlBrowser;
 import com.vxml.core.VxmlDoc;
 
-public class GotoTag extends AbstractTag {
+public class SubmitTag extends AbstractTag {
     private String src;
     private String target;
     private String next;

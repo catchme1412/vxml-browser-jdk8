@@ -1,5 +1,7 @@
 package com.vxml.tag;
 
+import com.vxml.core.Output;
+
 
 public class PromptTag extends AbstractTag {
 
@@ -13,10 +15,22 @@ public class PromptTag extends AbstractTag {
 //            isSkipExecute(true);
 //        }
     }
+    
+//    @Override
+//    public void execute() {
+//        String textContent = getNode().getTextContent();
+//        if (!textContent.trim().isEmpty()) {
+//            Output e = new Output();
+//            e.setOutputType("tts");
+//            e.setOutput(textContent.trim());
+//            getVxmlExecutor().getOutputQueue().add(e);
+//        }
+//    }
 
     @Override
     public void endTag() {
 //        clearTopSkipExecuteFlag();
+    	System.out.println("Ending prompt tag");
     }
     
 //    public boolean isProceed() {

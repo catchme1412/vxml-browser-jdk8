@@ -9,7 +9,7 @@ public class LogTag extends AbstractTag {
     @Override
     public void execute() {
         String message = getNode().getTextContent();
-        log.info(message);
+//        log.info(message);
     }
 
 }

@@ -6,13 +6,16 @@ import java.lang.reflect.Field;
 
 import org.w3c.dom.Node;
 
+import com.vxml.core.VxmlExecutor;
+
 public class TagFactory {
 
-	public static Tag get(Node node) {
+	public static Tag get(Node node, VxmlExecutor vxmlExecutor) {
 		String tagName = getTagName(node);
 		try {
 			Constructor c = Class.forName(tagName).getConstructor();
 			Tag tag = (Tag) c.newInstance();
+			((AbstractTag)tag).setVxmlExecutor(vxmlExecutor);
 			tag.setNode(node);
 			setFieldValues(node, tag);
 			return tag;

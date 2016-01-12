@@ -121,7 +121,7 @@ public class VxmlScriptEngine {
     }
     
     public static String getSubdialogNameKey() {
-        return VxmlScriptEngine.SCRIPT_EXECUTION_NAME_SPACE + VxmlExecutionContext.SUBDIALOG_NAME;
+        return VxmlScriptEngine.SCRIPT_EXECUTION_NAME_SPACE + ".subdialogName";
     }
     
     public String scopeVars() {

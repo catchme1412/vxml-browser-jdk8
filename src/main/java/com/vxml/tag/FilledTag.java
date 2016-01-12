@@ -1,8 +1,7 @@
 package com.vxml.tag;
 
-import com.vxml.core.VxmlBrowser;
-import com.vxml.core.VxmlExecutionContext;
-import com.vxml.core.input.VxmlNoInputEvent;
+import com.vxml.core.Input;
+import com.vxml.core.input.NoInputEvent;
 
 public class FilledTag extends AbstractTag {
 
@@ -10,12 +9,12 @@ public class FilledTag extends AbstractTag {
     public void execute() {
         try {
 //            System.out.println("In Filled" + Thread.currentThread().getId());
-            String input = VxmlExecutionContext.ioHandler.readInput();
-            System.out.println("READ:" + input);
+            Input input = getVxmlExecutor().readInput();
+            System.out.println("READ:" + input.getInputChar());
             String fieldName = getFieldName();
-            System.err.println("var " + fieldName + " = " + input);
-            VxmlBrowser.getVxmlExecutionContext().assignVar(fieldName, input);
-        } catch (VxmlNoInputEvent e) {
+            System.err.println("var " + fieldName + " = " + input.getInputChar());
+            getVxmlExecutor().assignVar(fieldName, input.getInputChar());
+        } catch (NoInputEvent | InterruptedException e) {
             System.out.println("NO INPUT : " + e);
         }
     }

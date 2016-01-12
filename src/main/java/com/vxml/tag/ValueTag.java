@@ -1,8 +1,6 @@
 package com.vxml.tag;
 
 import com.vxml.core.OutputType;
-import com.vxml.core.VxmlBrowser;
-import com.vxml.core.VxmlExecutionContext;
 
 public class ValueTag extends AbstractTag {
 
@@ -19,9 +17,9 @@ public class ValueTag extends AbstractTag {
     
     @Override
     public void execute() {
-        Object value = VxmlBrowser.getVxmlExecutionContext().getScriptVar(expr);
+        Object value = getVxmlExecutor().getScriptVar(expr);
         if (value != null) {
-            VxmlExecutionContext.ioHandler.recordOutput(OutputType.TTS, value.toString());
+            getVxmlExecutor().recordOutput(OutputType.TTS, value.toString(), isBargeinPeek());
         }
     }
 

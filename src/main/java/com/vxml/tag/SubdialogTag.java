@@ -19,21 +19,23 @@ public class SubdialogTag extends AbstractTag {
 
     @Override
     public void startTag() {
-        VxmlBrowser.getVxmlExecutionContext().executeScript("var " + name + " = {}");
+        getVxmlExecutor().executeScript("var " + name + " = {}");
         paramBackup = new HashMap<>();
     }
 
     @Override
     public void execute() {
-        src = src != null ? src : (String) VxmlBrowser.getVxmlExecutionContext().getScriptVar(srcexpr);
+        src = src != null ? src : (String) getVxmlExecutor().getScriptVar(srcexpr);
         backupParamValues();
-        VxmlBrowser.pushNewExecutionContextForSubdialog();
+        pushNewExecutionContextForSubdialog();
         createParams();
 //        VxmlExecutionContext.markSubdialog(name);
-        new VxmlDoc(src).play();
+        new VxmlDoc(src).play(getVxmlExecutor());
     }
 
-    private void backupParamValues() {
+    
+
+	private void backupParamValues() {
         NodeList paramList = getNode().getChildNodes();
         for (int i = 0; i < paramList.getLength(); i++) {
             Node node = paramList.item(i);
@@ -41,7 +43,7 @@ public class SubdialogTag extends AbstractTag {
             if (isParamTag) {
                 String name = node.getAttributes().getNamedItem("name").getNodeValue();
                 String expr = node.getAttributes().getNamedItem("expr").getNodeValue();
-                paramBackup.put(name, VxmlBrowser.getVxmlExecutionContext().getScriptVar(expr));
+                paramBackup.put(name, getVxmlExecutor().getScriptVar(expr));
             }
         }
         
@@ -67,8 +69,7 @@ public class SubdialogTag extends AbstractTag {
     }
 
     private void createParamEntry(String param, Object val) {
-        VxmlBrowser.getVxmlExecutionContext().assignVar(param, val);
-        String va = (String) VxmlBrowser.getVxmlExecutionContext().getScriptVar("paramPassed");
-        System.out.println(va);
+        getVxmlExecutor().assignVar(param, val);
+        String va = (String) getVxmlExecutor().getScriptVar("paramPassed");
     }
 }

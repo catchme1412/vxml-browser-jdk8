@@ -8,7 +8,7 @@ public class FieldTag extends AbstractTag {
 
     @Override
     public void execute() {
-        VxmlBrowser.getVxmlExecutionContext().executeScript("var " + name);
+    	getVxmlExecutor().executeScript("var " + name);
 
     }
 }

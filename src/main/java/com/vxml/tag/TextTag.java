@@ -1,7 +1,6 @@
 package com.vxml.tag;
 
 import com.vxml.core.OutputType;
-import com.vxml.core.VxmlExecutionContext;
 
 public class TextTag extends AbstractTag {
 
@@ -17,10 +16,10 @@ public class TextTag extends AbstractTag {
     @Override
     public void execute() {
         String text = getNode().getTextContent().trim();
-        // System.out.println("TTS:" + text);
-        VxmlExecutionContext.ioHandler.recordOutput(OutputType.TTS, text);
+        System.out.println("TTS:" + text);
+        getVxmlExecutor().recordOutput(OutputType.TTS, text, isBargeinPeek());
     }
-    
+
     @Override
     public void endTag() {
         clearTopExecuteFlag();

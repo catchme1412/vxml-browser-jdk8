@@ -16,8 +16,9 @@ public class VxmlDoc {
         xmlDoc = documentStore.getDoc(documentUrl);
     }
 
-    public void play() {
-        new VxmlParser().parse(this);
+    public void play(VxmlExecutor vxmlExecutor) {
+        VxmlParser vxmlParser = new VxmlParser();
+        vxmlParser.parse(this, vxmlExecutor);
     }
 
     public Document getXmlDoc() {
